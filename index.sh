@@ -30,6 +30,7 @@ echo "nameserver 8.8.4.4" >> /etc/resolv.conf
 apt-get update
 apt-get install wget -y
 
+# not a public ip, but these tarballs come from hoffman2 /u/apps folder
 wget http://10.240.0.4:8080/fastx_toolkit.tar.gz
 tar xzvf fastx_toolkit.tar.gz
 echo "export PATH=/root/apps/fastx_toolkit/0.0.13.2/gcc-4.4.6/bin/:\$PATH" >> .bashrc
