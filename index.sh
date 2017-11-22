@@ -15,3 +15,5 @@ passwd
 sudo systemd-nspawn -b -i ./ubuntu-16.04.img
 
 # login with root/your pw
+
+# install anacapa dependencies
