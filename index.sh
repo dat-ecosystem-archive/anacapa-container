@@ -1,3 +1,4 @@
+# assumes node, npm, debootstrap, systemd-container
 # create new .img with ubuntu installed
 npm install -g nspawn-bootstrap
 nspawn-bootstrap ./ubuntu-16.04.img --ubuntu xenial --size 4GB
