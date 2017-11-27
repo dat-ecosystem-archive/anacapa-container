@@ -25,10 +25,14 @@ source .bashrc
 # nspawn needs resolv.conf to be set up
 echo "nameserver 8.8.8.8" >> /etc/resolv.conf
 echo "nameserver 8.8.4.4" >> /etc/resolv.conf
+echo "DNS=8.8.8.8 8.8.4.4 2001:4860:4860::8888 2001:4860:4860::8844" >> /etc/systemd/resolved.conf
 
 # install anacapa dependencies
 apt-get update
 apt-get install wget -y
+
+# needed for R dynamic requires to work
+ln -s /root/apps /u/local/apps
 
 # not a public ip, but these tarballs come from hoffman2 /u/apps folder
 wget http://10.240.0.4:8080/fastx_toolkit.tar.gz
@@ -41,4 +45,14 @@ tar xzvf libgtextutils.tar.gz
 echo "/root/apps/libgtextutils/0.6.1/gcc-4.4.6/lib/" > /etc/ld.so.conf.d/libgtextutils.conf
 ldconfig # update cache
 
+# python w/ lots of preinstalled packages
+wget http://10.240.0.4:8080/python-2.7.13.tar.gz
+tar xzvf python-2.7.13.tar.gz
+echo "export PATH=/root/apps/python/2.7.13/bin:\$PATH" >> .bashrc
+source .bashrc
 
+# bowtie2
+wget http://10.240.0.4:8080/bowtie2-2.2.9.tar.gz
+tar xzvf bowtie2-2.2.9.tar.gz
+echo "export PATH=/root/apps/bowtie2/2.2.9:\$PATH" >> .bashrc
+source .bashrc
