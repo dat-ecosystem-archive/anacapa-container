@@ -34,12 +34,10 @@ RUN ldconfig # update cache
 # python w/ lots of preinstalled packages
 RUN tar xzvf hoffman-deps/python-2.7.13.tar.gz
 RUN echo "export PATH=/root/apps/python/2.7.13/bin:\$PATH" >> .bashrc
-RUN source .bashrc
 
 # bowtie2
 RUN tar xzvf hoffman-deps/bowtie2-2.2.9.tar.gz
 RUN echo "export PATH=/root/apps/bowtie2/2.2.9:\$PATH" >> .bashrc
-RUN source .bashrc
 
 # node + dat
 RUN curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
