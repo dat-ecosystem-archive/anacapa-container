@@ -19,8 +19,8 @@ RUN apt-get install software-properties-common apt-transport-https curl -y && \
   apt-get install -y nodejs && \
   npm i dat -g
 
-# data + software + PATH
-RUN dat clone abf59db56b915d6642edabd39121a790093596f76a634201ba3ec11893e716c5 Anacapa_db && \
+# install hoffman software
+RUN cd /root && \
   dat clone b67f9eafb5a5796ddfb0278acdfbf411f492f1d48b1a07bca4714364ff7dc6ff hoffman-deps && \
   tar xzvf hoffman-deps/fastx_toolkit.tar.gz && \
   echo "export PATH=/root/apps/fastx_toolkit/0.0.13.2/gcc-4.4.6/bin/:\$PATH" >> .bashrc && \
@@ -31,3 +31,6 @@ RUN dat clone abf59db56b915d6642edabd39121a790093596f76a634201ba3ec11893e716c5 A
   echo "export PATH=/root/apps/python/2.7.13/bin:\$PATH" >> .bashrc && \
   tar xzvf hoffman-deps/bowtie2-2.2.9.tar.gz && \
   echo "export PATH=/root/apps/bowtie2/2.2.9:\$PATH" >> .bashrc
+
+# download research data
+RUN cd /root && dat clone abf59db56b915d6642edabd39121a790093596f76a634201ba3ec11893e716c5 Anacapa_db
