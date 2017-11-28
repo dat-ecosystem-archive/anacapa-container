@@ -1,14 +1,16 @@
 ENV NSPAWN_BOOTSTRAP_IMAGE_SIZE=10GB
 FROM ubuntu:xenial
 
-# setup linux + dependencies
+# set unlimited bash history
 # nspawn needs resolv.conf to be set up for internet to work
 # password gets changeed so we can login later
 RUN echo "export HISTFILESIZE=" >> .bashrc && \
   echo "export HISTSIZE=" >> .bashrc && \
   rm -f /etc/resolv.conf && echo '8.8.8.8' > /etc/resolv.conf && \
-  echo "root:root" | chpasswd && \
-  apt-get install software-properties-common apt-transport-https curl -y && \
+  echo "root:root" | chpasswd
+ 
+# install apt + npm dependencies
+RUN apt-get install software-properties-common apt-transport-https curl -y && \
   apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 && \
   add-apt-repository 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu xenial/' && \
   apt-get update && \
