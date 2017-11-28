@@ -10,14 +10,15 @@ RUN echo "nameserver 8.8.8.8" >> /etc/resolvconf/resolv.conf.d/base
 RUN echo "nameserver 8.8.4.4" >> /etc/resolvconf/resolv.conf.d/base
 
 # install anacapa dependencies
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 # R
+RUN add-apt-repository 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu xenial/' # R
 RUN apt-get update
-RUN apt-get install curl wget software-properties-common apt-transport-https -y
+RUN apt-get install r-base curl software-properties-common apt-transport-https -y
 
-# R
-RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
-RUN add-apt-repository 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu xenial/'
-RUN apt-get update
-RUN apt-get install r-base -y
+# node + dat
+RUN curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+RUN apt-get install -y nodejs
+RUN npm i dat -g
 
 # Anacapa_db
 RUN dat clone abf59db56b915d6642edabd39121a790093596f76a634201ba3ec11893e716c5 Anacapa_db
@@ -38,8 +39,3 @@ RUN echo "export PATH=/root/apps/python/2.7.13/bin:\$PATH" >> .bashrc
 # bowtie2
 RUN tar xzvf hoffman-deps/bowtie2-2.2.9.tar.gz
 RUN echo "export PATH=/root/apps/bowtie2/2.2.9:\$PATH" >> .bashrc
-
-# node + dat
-RUN curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
-RUN apt-get install -y nodejs
-RUN npm i dat -g
