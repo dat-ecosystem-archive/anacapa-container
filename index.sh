@@ -58,9 +58,3 @@ wget http://10.240.0.4:8080/bowtie2-2.2.9.tar.gz
 tar xzvf bowtie2-2.2.9.tar.gz
 echo "export PATH=/root/apps/bowtie2/2.2.9:\$PATH" >> .bashrc
 source .bashrc
-
-# pcre shared lib
-wget http://10.240.0.4:8080/r-deps.tar.gz
-tar xzvf r-deps.tar.gz
-echo "/root/apps/pcre/8.39/lib/" > /etc/ld.so.conf.d/pcre.conf
-ldconfig # update cache
