@@ -9,11 +9,11 @@ RUN echo "export HISTSIZE=" >> .bashrc
 RUN rm -f /etc/resolv.conf && echo '8.8.8.8' > /etc/resolv.conf
 
 # install anacapa dependencies
-RUN apt-get install software-properties-common -y
+RUN apt-get install software-properties-common apt-transport-https curl -y
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 # R
 RUN add-apt-repository 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu xenial/' # R
 RUN apt-get update
-RUN apt-get install r-base curl software-properties-common apt-transport-https -y
+RUN apt-get install r-base -y
 
 # node + dat
 RUN curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
