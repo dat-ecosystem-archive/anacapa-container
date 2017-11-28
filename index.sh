@@ -28,10 +28,13 @@ echo "nameserver 8.8.4.4" >> /etc/resolv.conf
 
 # install anacapa dependencies
 apt-get update
-apt-get install wget libgfortran3 -y
+apt-get install wget software-properties-common apt-transport-https -y
 
-# needed for R dynamic requires to work
-ln -s /root/apps /u/local/apps
+# R
+apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
+add-apt-repository 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu xenial/'
+apt-get update
+apt-get install r-base -y
 
 # not a public ip, but these tarballs come from hoffman2 /u/apps folder
 wget http://10.240.0.4:8080/fastx_toolkit.tar.gz
