@@ -23,8 +23,8 @@ echo "export HISTSIZE=" >> .bashrc
 source .bashrc
 
 # nspawn needs resolv.conf to be set up
-echo "nameserver 8.8.8.8" >> /etc/resolv.conf
-echo "nameserver 8.8.4.4" >> /etc/resolv.conf
+echo "nameserver 8.8.8.8" >> /etc/resolvconf/resolv.conf.d/base
+echo "nameserver 8.8.4.4" >> /etc/resolvconf/resolv.conf.d/base
 
 # install anacapa dependencies
 apt-get update
