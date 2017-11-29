@@ -21,7 +21,7 @@ RUN apt-get install software-properties-common apt-transport-https curl -y && \
 
 # install hoffman software
 RUN cd /root && \
-  dat clone <KEY1> hoffman-deps && \
+  dat clone $KEY1 hoffman-deps && \
   tar xzvf hoffman-deps/fastx_toolkit.tar.gz && \
   echo "export PATH=/root/apps/fastx_toolkit/0.0.13.2/gcc-4.4.6/bin/:\$PATH" >> .bashrc && \
   tar xzvf hoffman-deps/libgtextutils.tar.gz && \
@@ -33,4 +33,4 @@ RUN cd /root && \
   echo "export PATH=/root/apps/bowtie2/2.2.9:\$PATH" >> .bashrc
 
 # download research data
-RUN cd /root && dat clone <KEY2> Anacapa_db
+RUN cd /root && dat clone $KEY2 Anacapa_db
