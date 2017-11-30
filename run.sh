@@ -1,0 +1,2 @@
+#!/bin/bash
+./Anacapa_db/scripts/anacapa_release_V1.sh -i ~/dada2/RAW -o ~/results -d ~/Anacapa_db -u maxogden -f ~/Anacapa_db/forward_primers.txt -r ~/Anacapa_db/reverse_primers.txt -a nextera -t MiSeq

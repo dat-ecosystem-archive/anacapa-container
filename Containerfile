@@ -1,4 +1,4 @@
-ENV NSPAWN_BOOTSTRAP_IMAGE_SIZE=10GB
+ENV NSPAWN_BOOTSTRAP_IMAGE_SIZE=20GB
 FROM ubuntu:xenial
 
 # set unlimited bash history
@@ -7,7 +7,8 @@ FROM ubuntu:xenial
 RUN echo "export HISTFILESIZE=" >> .bashrc && \
   echo "export HISTSIZE=" >> .bashrc && \
   rm -f /etc/resolv.conf && echo '8.8.8.8' > /etc/resolv.conf && \
-  echo "root:root" | chpasswd
+  echo "root:root" | chpasswd && \
+  mkdir release
  
 # install apt + npm dependencies
 RUN apt-get install software-properties-common apt-transport-https curl -y && \
@@ -23,6 +24,8 @@ RUN apt-get install software-properties-common apt-transport-https curl -y && \
 RUN cd /root && \
   dat clone $KEY1 hoffman-deps && \
   tar xzvf hoffman-deps/fastx_toolkit.tar.gz && \
+  mkdir -p /u/local && \
+  ln -s /root/apps /u/local/apps && \
   echo "export PATH=/root/apps/fastx_toolkit/0.0.13.2/gcc-4.4.6/bin/:\$PATH" >> .bashrc && \
   tar xzvf hoffman-deps/libgtextutils.tar.gz && \
   echo "/root/apps/libgtextutils/0.6.1/gcc-4.4.6/lib/" > /etc/ld.so.conf.d/libgtextutils.conf && \
