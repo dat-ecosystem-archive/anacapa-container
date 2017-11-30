@@ -37,6 +37,7 @@ RUN cd /root && \
 
 # download research data
 RUN cd /root && dat clone $KEY2 Anacapa_db
+RUN cd /root && dat clone $KEY3 dada2
 
 # download run script
 RUN cd /root && \
