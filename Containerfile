@@ -19,6 +19,13 @@ RUN apt-get install software-properties-common apt-transport-https curl wget -y 
   curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash - && \
   apt-get install -y nodejs && \
   npm i dat -g
+  
+# download scripts from this gist
+RUN cd /root && \
+  git clone https://gist.github.com/maxogden/7ad5c0e81ee003fde843f6a133d94b86 gist && \
+  mv gist/run.sh run.sh && \
+  chmod +x run.sh && \
+  Rscript --vanilla gist/install-deps.R
 
 # install hoffman software
 RUN cd /root && \
@@ -38,8 +45,3 @@ RUN cd /root && \
 # download research data
 RUN cd /root && dat clone $KEY2 Anacapa_db
 RUN cd /root && dat clone $KEY3 dada2
-
-# download run script
-RUN cd /root && \
-  wget https://gist.githubusercontent.com/maxogden/7ad5c0e81ee003fde843f6a133d94b86/raw/61ac4d32106654c28c992cc85792218e7283c6f2/run.sh && \
-  chmod +x run.sh
