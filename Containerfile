@@ -11,7 +11,7 @@ RUN echo "export HISTFILESIZE=" >> .bashrc && \
   mkdir release
  
 # install apt + npm dependencies
-RUN apt-get install software-properties-common apt-transport-https curl wget libssl-dev libcurl4-openssl-dev git -y && \
+RUN apt-get install software-properties-common apt-transport-https curl wget git libssl-dev libcurl4-openssl-dev libxml2-dev -y && \
   apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 && \
   add-apt-repository 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu xenial/' && \
   apt-get update && \
