@@ -43,5 +43,6 @@ RUN cd /root && \
   echo "export PATH=/root/apps/bowtie2/2.2.9:\$PATH" >> .bashrc
 
 # download research data
-RUN cd /root && dat clone $KEY2 Anacapa_db
+RUN cd /root && dat clone $KEY2 Anacapa_db && \
+  chmod +x /root/Anacapa_db/scripts/anacapa_release_V1.sh
 RUN cd /root && dat clone $KEY3 dada2
