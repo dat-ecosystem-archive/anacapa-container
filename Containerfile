@@ -40,9 +40,9 @@ RUN cd /root && \
   tar xzvf hoffman-deps/python-2.7.13.tar.gz && \
   echo "export PATH=/root/apps/python/2.7.13/bin:\$PATH" >> .bashrc && \
   tar xzvf hoffman-deps/bowtie2-2.2.9.tar.gz && \
-  echo "export PATH=/root/apps/bowtie2/2.2.9:\$PATH" >> .bashrc
+  echo "export PATH=/root/apps/bowtie2/2.2.9:\$PATH" >> .bashrc && \
+  cp hoffman-deps/muscle3.8.31_i86linux64 /usr/local/bin/muscle
 
-# download research data
+# download pipeline
 RUN cd /root && dat clone $KEY2 Anacapa_db && \
   chmod +x /root/Anacapa_db/scripts/anacapa_release_V1.sh
-RUN cd /root && dat clone $KEY3 dada2
