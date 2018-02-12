@@ -17,8 +17,11 @@ RUN apt-get install software-properties-common apt-transport-https curl wget git
   add-apt-repository universe && \
   apt-get update && \
   apt-get install r-base -y && \
+  wget -P /tmp/ "http://repo.continuum.io/archive/Anaconda2-5.0.1-Linux-x86_64.sh" && \
+  bash "/tmp/Anaconda2-5.0.1-Linux-x86_64.sh" -b -p /root/anaconda && \
+  echo "export PATH=/root/anaconda/bin:\$PATH" >> .bashrc && \
   curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash - && \
-  apt-get install -y nodejs python-pip && \
+  apt-get install -y nodejs && \
   npm i dat -g
 
 # download scripts from this gist
@@ -27,8 +30,7 @@ RUN cd /root && \
   mv gist/run.sh run.sh && \
   chmod +x run.sh && \
   Rscript --vanilla gist/install-deps.R && \
-  pip install biopython cutadapt && \
-  pip install -I pandas==0.20.3
+  pip install biopython cutadapt
 
 # install hoffman software
 RUN cd /root && \
