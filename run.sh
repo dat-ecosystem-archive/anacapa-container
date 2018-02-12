@@ -1,2 +1,3 @@
 #!/bin/bash
-time ./Anacapa_db/anacapa_QC_dada2.sh -i /root/Anacapa_test_data/MiSeq -o /root/results-miseq -d /root/Anacapa_db -f /root/Anacapa_db/forward_primers.txt -r /root/Anacapa_db/reverse_primers.txt -a nextera -t MiSeq
+time ./Anacapa_db/anacapa_QC_dada2.sh -i /root/CO1_mock_data/CO1_Leray_and_Knowlton_fastq-2x300 -o /root/results-mock -d /root/Anacapa_db -f /root/CO1_mock_data/forward_CO1_p.txt -r /root/CO1_mock_data/reverse_CO1_p.txt -a nextera -t MiSeq &> qclog.txt
+time ./Anacapa_db/anacapa_bowtie2_blca.sh -o /root/results-mock -d /root/Anacapa_db -u maxogden &> blcalog.txt
