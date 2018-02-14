@@ -1,4 +1,4 @@
-CUTADAPT="/usr/local/bin/cutadapt"
+CUTADAPT="/root/anaconda/bin/cutadapt"
 MUSCLE="/usr/local/bin/muscle"
 MODULE_SOURCE=""
 FASTX_TOOLKIT=""
