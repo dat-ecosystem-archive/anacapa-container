@@ -1,3 +1,4 @@
+source /usr/local/anacapa/.bashrc
 CUTADAPT="/usr/local/anacapa/anaconda/bin/cutadapt"
 MUSCLE="/usr/local/bin/muscle"
 MODULE_SOURCE=""
