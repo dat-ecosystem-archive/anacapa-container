@@ -1,3 +1,4 @@
+# anacapa-container version of config. copy to Anacapa_db/scripts folder
 CUTADAPT="/usr/local/anacapa/anaconda/bin/cutadapt"
 MUSCLE="/usr/local/bin/muscle"
 MODULE_SOURCE=""
@@ -8,4 +9,4 @@ ATS=""
 R=""
 PYTHONWNUMPY=""
 GCC=""
-LOCALMODE=TRUE
+RUNNER="/opt/singularity-2.4.2/bin/singularity exec -B /act /home/mogden2/anacapa-1.0.0.img /bin/bash"

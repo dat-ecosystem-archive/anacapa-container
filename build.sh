@@ -1,10 +1,4 @@
-#!/usr/bin/bash
-mkdir mnt cache
-set -e
-mkcontainer-generate
-make CACHE=$PWD/cache
-sudo losetup -Pf container.img --show
-sudo mount /dev/loop0p1 mnt # todo detect correct one from --show above
-sudo singularity build --writable singularity.img mnt
-sudo umount mnt
-sudo losetup -D # todo figure out how to detach only ours from above, not all
+#!/bin/bash
+# builds container from Containerfile
+# usage: ./build.sh. change CACHE dir to your own path where cached build layers should live
+mkcontainer-generate && make CACHE=/mnt/bigdisk/UCLA/container/cache &> buildlog.txt 
