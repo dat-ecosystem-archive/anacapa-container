@@ -13,7 +13,7 @@ RUN cd /usr/local/anacapa && \
   echo "export HISTFILESIZE=" >> .bashrc && \
   echo "export HISTSIZE=" >> .bashrc && \
   rm -f /etc/resolv.conf && echo '8.8.8.8' > /etc/resolv.conf && \
-  echo "root:root" | chpasswd && \
+  echo "root:root" | chpasswd
   
 # install apt + npm dependencies
 RUN apt-get install software-properties-common apt-transport-https curl wget git libssl-dev libcurl4-openssl-dev libxml2-dev -y && \
