@@ -1,15 +1,20 @@
-ENV NSPAWN_BOOTSTRAP_IMAGE_SIZE=20GB
+ENV NSPAWN_BOOTSTRAP_IMAGE_SIZE=10GB
 FROM ubuntu:xenial
+
+# install singularity config files
+COPY anacapa /usr/local/anacapa
+RUN cd /usr/local/anacapa/singularity-files && \
+  cp -a * /
 
 # set unlimited bash history
 # nspawn needs resolv.conf to be set up for internet to work
-# password gets changeed so we can login later
-RUN echo "export HISTFILESIZE=" >> .bashrc && \
+# root password gets changed to 'root'
+RUN cd /usr/local/anacapa && \
+  echo "export HISTFILESIZE=" >> .bashrc && \
   echo "export HISTSIZE=" >> .bashrc && \
   rm -f /etc/resolv.conf && echo '8.8.8.8' > /etc/resolv.conf && \
   echo "root:root" | chpasswd && \
-  mkdir /usr/local/anacapa
-
+  
 # install apt + npm dependencies
 RUN apt-get install software-properties-common apt-transport-https curl wget git libssl-dev libcurl4-openssl-dev libxml2-dev -y && \
   apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 && \
@@ -24,25 +29,32 @@ RUN apt-get install software-properties-common apt-transport-https curl wget git
   apt-get install -y nodejs && \
   npm i dat -g
 
-# download scripts from this gist
+# install R modules
 RUN cd /usr/local/anacapa && \
-  git clone https://gist.github.com/maxogden/7ad5c0e81ee003fde843f6a133d94b86 gist && \
-  mv gist/run.sh run.sh && \
-  chmod +x run.sh && \
-  Rscript --vanilla gist/install-deps.R && \
-  pip install biopython cutadapt
+  . /usr/local/anacapa/.bashrc && \
+  Rscript --vanilla install-deps.R && \
+  chmod o+w /usr/local/lib/R/site-library
 
-# install hoffman software
+# install python modules
+RUN cd /usr/local/anacapa & \
+  . /usr/local/anacapa/.bashrc && \
+  pip install biopython cutadapt && \
+  conda config --add channels r && \
+  conda config --add channels defaults && \
+  conda config --add channels conda-forge && \
+  conda config --add channels bioconda && \
+  conda install -yqc bioconda ecopcr obitools blast bowtie2
+
+# install bundled software
 RUN cd /usr/local/anacapa && \
-  dat clone $HOFFMANDEPS hoffman-deps && \
-  tar xzvf hoffman-deps/fastx_toolkit.tar.gz && \
+  tar xzvf fastx_toolkit.tar.gz && \
   mkdir -p /u/local && \
   ln -s /usr/local/anacapa/apps /u/local/apps && \
   echo "export PATH=/usr/local/anacapa/apps/fastx_toolkit/0.0.13.2/gcc-4.4.6/bin/:\$PATH" >> .bashrc && \
-  tar xzvf hoffman-deps/libgtextutils.tar.gz && \
+  tar xzvf libgtextutils.tar.gz && \
   echo "/usr/local/anacapa/apps/libgtextutils/0.6.1/gcc-4.4.6/lib/" > /etc/ld.so.conf.d/libgtextutils.conf && \
   ldconfig && \
-  tar xzvf hoffman-deps/bowtie2-2.2.9.tar.gz && \
+  tar xzvf bowtie2-2.2.9.tar.gz && \
   echo "export PATH=/usr/local/anacapa/apps/bowtie2/2.2.9:\$PATH" >> .bashrc && \
-  cp hoffman-deps/muscle3.8.31_i86linux64 /usr/local/bin/muscle && \
+  cp muscle3.8.31_i86linux64 /usr/local/bin/muscle && \
   chmod +x /usr/local/bin/muscle
