@@ -3,8 +3,7 @@ FROM ubuntu:xenial
 
 # install singularity config files
 COPY anacapa /usr/local/anacapa
-RUN cd /usr/local/anacapa/singularity-files && \
-  cp -a * /
+RUN cp -aR /usr/local/anacapa/singularity-files/. /
 
 # set unlimited bash history
 # nspawn needs resolv.conf to be set up for internet to work
