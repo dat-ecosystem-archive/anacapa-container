@@ -3,7 +3,8 @@ FROM ubuntu:xenial
 
 # install singularity config files
 COPY anacapa /usr/local/anacapa
-RUN cp -aR /usr/local/anacapa/singularity-files/. /
+RUN cd /usr/local/anacapa/singularity-files && \
+  cp -r ./ /
 
 # set unlimited bash history
 # nspawn needs resolv.conf to be set up for internet to work
@@ -15,12 +16,7 @@ RUN cd /usr/local/anacapa && \
   echo "root:root" | chpasswd
   
 # install apt + npm dependencies
-RUN apt-get install software-properties-common apt-transport-https curl wget git libssl-dev libcurl4-openssl-dev libxml2-dev -y && \
-  apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 && \
-  add-apt-repository 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu xenial/' && \
-  add-apt-repository universe && \
-  apt-get update && \
-  apt-get install r-base -y && \
+RUN apt-get install build-essential software-properties-common apt-transport-https curl wget git libssl-dev libcurl4-openssl-dev libxml2-dev gfortran -y && \
   wget -P /tmp/ "http://repo.continuum.io/archive/Anaconda2-5.0.1-Linux-x86_64.sh" && \
   bash "/tmp/Anaconda2-5.0.1-Linux-x86_64.sh" -b -p /usr/local/anacapa/anaconda && \
   echo "export PATH=/usr/local/anacapa/anaconda/bin:\$PATH" >> /usr/local/anacapa/.bashrc && \
@@ -28,21 +24,16 @@ RUN apt-get install software-properties-common apt-transport-https curl wget git
   apt-get install -y nodejs && \
   npm i dat -g
 
-# install R modules
-RUN cd /usr/local/anacapa && \
-  . /usr/local/anacapa/.bashrc && \
-  Rscript --vanilla install-deps.R && \
-  chmod o+w /usr/local/lib/R/site-library
-
 # install python modules
-RUN cd /usr/local/anacapa & \
+RUN cd /usr/local/anacapa && \
   . /usr/local/anacapa/.bashrc && \
   pip install biopython cutadapt && \
   conda config --add channels r && \
   conda config --add channels defaults && \
   conda config --add channels conda-forge && \
   conda config --add channels bioconda && \
-  conda install -yqc bioconda ecopcr obitools blast bowtie2
+  conda install -yqc bioconda bioconductor-impute bioconductor-genefilter bioconductor-phyloseq bioconductor-dada2 ecopcr obitools blast bowtie2 libiconv && \
+  Rscript --vanilla install-deps.R
 
 # install bundled software
 RUN cd /usr/local/anacapa && \

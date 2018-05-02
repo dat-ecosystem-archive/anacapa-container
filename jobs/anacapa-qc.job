@@ -1,0 +1,20 @@
+#! /bin/bash
+#$ -S /bin/bash
+#$ -q std.q
+#$ -cwd
+#$ -N anacapa-co1-mock
+#$ -j y
+#$ -o anacapa-co1-mock-out.qlog
+#$ -e anacapa-co1-mock-err.qlog
+#$ -l mem_free=48G
+#$ -pe smp 1
+#$ -V
+# This submission file will run a simple set of commands. All stdout will
+# be captured in test1.qlog (as specified in the SGE command -o above).
+# This job file uses a shared-memory parallel environment and requests 20
+# cores on a single node. This job will also run a global script called
+# merced_node_print that will let the user log the node where a job is
+# run. For more info on this script, cat /usr/local/bin/merced_node_print.
+#
+
+time /opt/singularity-2.4.2/bin/singularity exec -B /act /home/mogden2/anacapa-1.2.0.img /bin/bash -c "time /home/mogden2/Anacapa-git/Anacapa_db/anacapa_QC_dada2.sh -i /home/mogden2/Mock_CO1_Leray_Knowlton/CO1_Leray_and_Knowlton_fastq-2x300 -o /home/mogden2/results-mock -d /home/mogden2/Anacapa-git/Anacapa_db -k /home/mogden2/Anacapa-git/Anacapa_db/scripts/merced_hpc_headers.sh -f /home/mogden2/Mock_CO1_Leray_Knowlton/forward_CO1_p.txt -r /home/mogden2/Mock_CO1_Leray_Knowlton/reverse_CO1_p.txt -e /home/mogden2/Anacapa-git/Anacapa_db/metabarcode_loci_min_merge_length.txt -a nextera -t MiSeq -u mogden2"
