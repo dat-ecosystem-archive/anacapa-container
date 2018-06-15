@@ -5,8 +5,8 @@ A containerized way to run the [Anacapa eDNA processing toolkit](https://github.
 ## Requirements
 
 - Access to a Linux computer (Mac/Windows planned but not ready yet)
-- [http://singularity.lbl.gov/docs-mount](Singularity) installed
-- [https://github.com/datproject/dat/#installing-the--dat-command-line-tool](Dat) installed
+- [Singularity](http://singularity.lbl.gov/docs-mount) installed
+- [Dat](https://github.com/datproject/dat/#installing-the--dat-command-line-tool) installed
 - Around 6GB of disk space
 
 ### 1. Install Singularity
