@@ -17,9 +17,9 @@ RUN cd /usr/local/anacapa && \
   
 # install apt + npm dependencies
 RUN apt-get install build-essential software-properties-common apt-transport-https curl wget git libssl-dev libcurl4-openssl-dev libxml2-dev gfortran -y && \
-  wget -P /tmp/ "http://repo.continuum.io/archive/Anaconda2-5.0.1-Linux-x86_64.sh" && \
-  bash "/tmp/Anaconda2-5.0.1-Linux-x86_64.sh" -b -p /usr/local/anacapa/anaconda && \
-  echo "export PATH=/usr/local/anacapa/anaconda/bin:\$PATH" >> /usr/local/anacapa/.bashrc && \
+  wget -P /tmp/ "https://repo.continuum.io/miniconda/Miniconda2-4.5.4-Linux-x86_64.sh" && \
+  bash "/tmp/Miniconda2-4.5.4-Linux-x86_64.sh" -b -p /usr/local/anacapa/miniconda && \
+  echo "export PATH=/usr/local/anacapa/miniconda/bin:\$PATH" >> /usr/local/anacapa/.bashrc && \
   curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash - && \
   apt-get install -y nodejs && \
   npm i dat -g
