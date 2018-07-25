@@ -32,7 +32,7 @@ RUN cd /usr/local/anacapa && \
   conda config --add channels defaults && \
   conda config --add channels conda-forge && \
   conda config --add channels bioconda && \
-  conda install -yqc bioconda bioconductor-impute bioconductor-genefilter bioconductor-phyloseq bioconductor-dada2 ecopcr obitools blast bowtie2 libiconv cogent && \
+  conda install -yqc bioconda bioconductor-impute bioconductor-genefilter bioconductor-phyloseq bioconductor-dada2 ecopcr obitools blast bowtie2 libiconv cogent pandas && \
   Rscript --vanilla install-deps.R
 
 # install bundled software
