@@ -137,4 +137,6 @@ After a successful installation the Singularity Vagrant Virtual, start a new ins
 
 Users can load their own data into the Virtualbox by adding it to the singularity-vm/ directory and moving it into the vagrant directory in the Vituralbox.
 
+```
 vagrant@vagrant:/vagrant$ cp -r /vagrant/datafolder ~/Anacapa-git/
+```
