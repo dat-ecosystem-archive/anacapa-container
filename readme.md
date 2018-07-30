@@ -6,8 +6,7 @@ Written by Emily Curd and Max Ogden.
 
 ## Requirements
 
-- Linux (recommended)
-- If Linux not available, Mac or Windows computer (see Vagrant section)
+- Linux (recommended) or Windows/Mac via Virtualbox (Slower but works)
 - Around 6GB of disk space
 
 ## Overview
@@ -15,6 +14,8 @@ Written by Emily Curd and Max Ogden.
 The following guide shows how to download and run the Anacapa toolkit and process a small test dataset. To ensure reproducibility we recommend verifying the test dataset matches the included expected output data from our verified runs. Once you complete these steps you may continue on to load your own data for custom analysis.
 
 ### Linux Instructions
+
+For Mac/Windows instructions, first see the Vagrant section below.
 
 We recommend using Linux to run Anacapa Container, as running it on Windows or Mac involves virtualization which imposes performance and resource limitations, potentially making analysis slower depending on the size of your data.
 
@@ -28,34 +29,26 @@ This guide was tested with Singularity version 2.5.2.
 
 ### 2. Download the container and test data
 
-Download the container dataset from DASH: https://dash.ucmerced.edu/stash/dataset/doi:10.6071/M31H29. You will be emailed a download link that you can download to whatever machine you want to run the analysis on (You can do `wget <url of download>` to download on the CLI directly and then `tar xf downloaded-file.tar.gz` to extract it).
+Download the Linux container dataset from DASH: https://doi.org/10.6071/M31H29. You will be emailed a download link that you can download to whatever machine you want to run the analysis on (You can do `wget <url of download>` to download on the CLI directly and then `tar xf downloaded-file.tar.gz` to extract it).
 
 You should now see 5 files. The first three are the ones used to run an initial reproducibility test. The last 2 you can use when doing your own full analyses later.
 
 #### anacapa-1.4.0.img
 
-This is the Singularity container with all necessary software dependencies (Python, R, Perl, Bash) you will use with Singularity to execute the Anacapa toolkit
+This is the Singularity container with all necessary software dependencies (Python, R, Perl, Bash) you will use with Singularity to execute the Anacapa toolkit.
 
-#### anacapa_12S_test.zip
+#### anacapa_db.zip
 
-This is a copy of the Anacapa toolkit along with a small 12S test dataset. Extract this file. The extracted Anacapa-git directory will contain the following:
+This is a copy of the Anacapa toolkit packaged with a full copy of all CRUX primer types, and a small 12S test sequence. Extract this file. The extracted Anacapa-git directory will contain the following:
   - Anacapa_db (the toolkit itself)
   - 12S_test_data
   - Anacapa_test_data_expected_output_after_QC_dada2
   - Anacapa_test_data_expected_output_after_classifier
   - Crux_test_expected_output
 
-#### crux_db_12S.zip
-
-A limited version of Crux with only 12S data for use in the testing below. Extract this file and place the extracted folder inside the Anacapa_db folder you extracted from anacapa_12S_test.
-
-#### anacapa_db.zip
-
-This is a copy of the Anacapa toolkit packaged with a full copy of all CRUX primer types. Use this when doing your own multi-primer analysis.
-
 #### crux_db.zip
 
-A full non-testing copy of the [CRUX](https://github.com/limey-bean/CRUX_Creating-Reference-libraries-Using-eXisting-tools/) repository. If developing your own reference libraries, follow the instructions in the CRUX GitHub readme. 
+A full copy of the [CRUX](https://github.com/limey-bean/CRUX_Creating-Reference-libraries-Using-eXisting-tools/) repository. If developing your own reference libraries, you will need to download additional files. Follow the instructions in the CRUX GitHub readme if so.
 
 ### 3. Test the container
 
@@ -122,8 +115,6 @@ sys	0m1.480s
 
 These instructions will allow users to run the Anacapa Toolkit on an OSX or PC. The authors note that running Anacapa on a Virtualbox may reduce the speed, and performance of the toolkit. We recommend that the user allow the Vagrant Virtualbox at least 10 GB of memory. 	If the vagrant Virtualbox does not have at least 5 GB of free Memory some steps may fail.
 
-**Instructions**: Follow the instructions above for Linux, but skip Linux Step 1 and complete the following steps before moving on to Linux Step 2 above.
-
 1. Install Singularity Vagrant Virtualbox Linux
 
 Follow these instructions (These pages are also backed up in Git files above if links break):
@@ -134,17 +125,28 @@ Follow these instructions (These pages are also backed up in Git files above if 
 
 After a successful installation the Singularity Vagrant Virtual, start a new instance by logging into a terminal (for MAC) or GitBash for (PC).
 
-	* changing directory to the one that contains the Singularity virtual machine e.g.
-		* $ cd singularity-vm/
-		* $ vagrant up
-		* $ vagrant ssh
+Change directory to the one that contains the Singularity virtual machine e.g.
 
-3. Now follow Linux instructions above starting with step 2
+```
+$ cd singularity-vm/
+$ vagrant up
+$ vagrant ssh
+```
+
+3. Download the Anacapa vagrant container
+
+First, download the Linux Container dataset from https://doi.org/10.6071/M31H29. Extract the downloaded file and ensure `anacapa-1.4.0.img` is present.
+
+Next, Download the Anacapa Vagrant Container from https://doi.org/10.6071/M3R07J. Extract the downloaded .tar.gz file and you should see two files, a copy of both Anacapa and CRUX configured for use in Vagrant. Extract both files, and then move the `crux_db` folder inside the `Anacapa_db` folder. Then move `anacapa-1.4.0.img` and `Anacapa_db` into a new folder somewhere you are comfortable working in, such as a folder called 'anacapa-test' in your home folder.
 
 4. To load your own data
 
-Users can load their own data into the Virtualbox by adding it to the singularity-vm/ directory and moving it into the vagrant directory in the Vituralbox.
+If the need arises, users can load their own data into the Virtualbox by adding it to the `singularity-vm/` directory and moving it into the vagrant directory in the Vituralbox.
 
 ```
 vagrant@vagrant:/vagrant$ cp -r /vagrant/datafolder ~/Anacapa-git/
 ```
+
+5. Follow test instructions
+
+At this point please follow the Linux instructions above, starting at number 3 "Test the container", using your `vagrant ssh` session to enter the commands.
