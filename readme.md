@@ -30,24 +30,32 @@ This guide was tested with Singularity version 2.5.2.
 
 Download the container dataset from DASH: https://dash.ucmerced.edu/stash/dataset/doi:10.6071/M31H29. You will be emailed a download link that you can download to whatever machine you want to run the analysis on (You can do `wget <url of download>` to download on the CLI directly and then `tar xf downloaded-file.tar.gz` to extract it).
 
-You should now see 3 files:
+You should now see 5 files. The first three are the ones used to run an initial reproducibility test. The last 2 you can use when doing your own full analyses later.
 
 #### anacapa-1.4.0.img
 
 This is the Singularity container with all necessary software dependencies (Python, R, Perl, Bash) you will use with Singularity to execute the Anacapa toolkit
 
-#### anacapa_with_test_data.zip
+#### anacapa_12S_test.zip
 
-This is a copy of the Anacapa toolkit as of July 2018 along with a small test dataset. Extract this file. The extracted Anacapa-git directory will contain the following:
+This is a copy of the Anacapa toolkit along with a small 12S test dataset. Extract this file. The extracted Anacapa-git directory will contain the following:
   - Anacapa_db (the toolkit itself)
   - 12S_test_data
   - Anacapa_test_data_expected_output_after_QC_dada2
   - Anacapa_test_data_expected_output_after_classifier
   - Crux_test_expected_output
 
+#### crux_db_12S.zip
+
+A limited version of Crux with only 12S data for use in the testing below. Extract this file and place the extracted folder inside the Anacapa_db folder you extracted from anacapa_12S_test.
+
+#### anacapa_db.zip
+
+This is a copy of the Anacapa toolkit packaged with a full copy of all CRUX primer types. Use this when doing your own multi-primer analysis.
+
 #### crux_db.zip
 
-A full copy of the CRUX Database folder for all CALeDNA primer types as of July 2018. Extract this folder and place it inside your Anacapa_db folder.
+A full non-testing copy of the [CRUX](https://github.com/limey-bean/CRUX_Creating-Reference-libraries-Using-eXisting-tools/) repository. If developing your own reference libraries, follow the instructions in the CRUX GitHub readme. 
 
 ### 3. Test the container
 
@@ -68,12 +76,12 @@ Singularity anacapa-1.4.0.img:~>
 
 Any commands you type in the Singularity shell will happen inside the container. Type `exit` to go back to your normal shell.
 
-### 4. Run the CRUX 16S example
+### 4. Run the CRUX 12S example
 
 **Note** For all the follow examples, you may need to change the exact paths to match the paths on your local machine. Included paths use vagrant paths as an example.
 
 ```
-$ singularity exec /home/vagrant/anacapa-1.4.0.img /bin/bash /home/vagrant/Anacapa-git/crux_db/crux.sh -n 16S_example -f GTGYCAGCMGCCGCGGTAA -r GGACTACNVGGGTWTCTAAT -s 200 -m 450 -o ~/Anacapa-git/crux_db/16S_example -d ~/Anacapa-git/crux_db/ -l -a 1 -v 0.001 -e 5 -q
+$ singularity exec /home/vagrant/anacapa-1.4.0.img /bin/bash /home/vagrant/Anacapa-git/crux_db/crux.sh -n 12S_example -f GTGYCAGCMGCCGCGGTAA -r GGACTACNVGGGTWTCTAAT -s 200 -m 450 -o ~/Anacapa-git/crux_db/12S_example -d ~/Anacapa-git/crux_db/ -l -a 1 -v 0.001 -e 5 -q
 ```
 
 The expected results can be found in the ~/Anacapa-git/Crux_test_expected_output
