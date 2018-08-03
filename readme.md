@@ -31,61 +31,54 @@ This guide was tested with Singularity version 2.5.2.
 
 Download the Linux container dataset from DASH: https://doi.org/10.6071/M31H29. You will be emailed a download link that you can download to whatever machine you want to run the analysis on (You can do `wget <url of download>` to download on the CLI directly and then `tar xf downloaded-file.tar.gz` to extract it).
 
-You should now see 5 files. The first three are the ones used to run an initial reproducibility test. The last 2 you can use when doing your own full analyses later.
+You should now see 3 files. 
 
-#### anacapa-1.4.0.img
+#### anacapa-1.5.0.img
 
-This is the Singularity container with all necessary software dependencies (Python, R, Perl, Bash) you will use with Singularity to execute the Anacapa toolkit.
+This is the Singularity container with all necessary software dependencies (Python, R, Perl, Bash) you will use with Singularity to execute the Anacapa toolkit. This image was created using Containerfile in this repository.
 
-#### anacapa_db.zip
+#### anacapa_db.tar.gz
 
-This is a copy of the Anacapa toolkit packaged with a full copy of all CRUX primer types, and a small 12S test sequence. Extract this file. The extracted Anacapa-git directory will contain the following:
+This is a copy of the Anacapa toolkit packaged with a full copy of all CRUX primer types, and a small 12S test sequence. The extracted `anacapa` directory will contain the following:
   - Anacapa_db (the toolkit itself)
   - 12S_test_data
   - Anacapa_test_data_expected_output_after_QC_dada2
   - Anacapa_test_data_expected_output_after_classifier
   - Crux_test_expected_output
 
-#### crux_db.zip
+#### crux_db.tar.gz
 
-A full copy of the [CRUX](https://github.com/limey-bean/CRUX_Creating-Reference-libraries-Using-eXisting-tools/) repository. If developing your own reference libraries, you will need to download additional files. Follow the instructions in the CRUX GitHub readme if so.
+(Optional) A partial copy of the [CRUX](https://github.com/limey-bean/CRUX_Creating-Reference-libraries-Using-eXisting-tools/) repository modified for use in Vagrant and a small 16S test dataset. If developing your own reference libraries, you will need to extract this and then download additional files. Follow the instructions in the CRUX GitHub readme if so.
 
 ### 3. Test the container
 
 Try this command to enter the container:
 
 ```
-singularity shell anacapa-1.4.0.img
+singularity shell anacapa-1.5.0.img
 ```
 
 You should see something like this:
 
 ```
-$ singularity shell anacapa-1.4.0.img
+$ singularity shell anacapa-1.5.0.img
 Singularity: Invoking an interactive shell within container...
 
-Singularity anacapa-1.4.0.img:~> 
+Singularity anacapa-1.5.0.img:~> 
 ```
 
 Any commands you type in the Singularity shell will happen inside the container. Type `exit` to go back to your normal shell.
 
-### 4. Run the CRUX 12S example
+### 4. Run the Anacapa QC example
 
-**Note** For all the follow examples, you may need to change the exact paths to match the paths on your local machine. Included paths use vagrant paths as an example.
-
-```
-$ singularity exec /home/vagrant/anacapa-1.4.0.img /bin/bash /home/vagrant/Anacapa-git/crux_db/crux.sh -n 12S_example -f GTGYCAGCMGCCGCGGTAA -r GGACTACNVGGGTWTCTAAT -s 200 -m 450 -o ~/Anacapa-git/crux_db/12S_example -d ~/Anacapa-git/crux_db/ -l -a 1 -v 0.001 -e 5 -q
-```
-
-The expected results can be found in the ~/Anacapa-git/Crux_test_expected_output
-
-7. Run the Anacapa QC example
+This command runs the Anacapa QC pipeline with the included `12S_test_data`. Edit the ANACAPA variable to point to your extracted `anacapa` folder.
 
 ```
-$ singularity exec /home/vagrant/anacapa-container/anacapa-1.4.0.img /bin/bash /home/vagrant/Anacapa-git/Anacapa_db/anacapa_QC_dada2.sh -i /home/vagrant/Anacapa-git/12S_test_data -o /home/vagrant/12S_time_test -d /home/vagrant/Anacapa-git/Anacapa_db -f /home/vagrant/Anacapa-git/12S_test_data/forward.txt -r /home/vagrant/Anacapa-git/12S_test_data/reverse.txt -e /home/vagrant/Anacapa-git/Anacapa_db/metabarcode_loci_min_merge_length.txt -a nextera -t MiSeq -l
+$ export ANACAPA="/home/vagrant/anacapa"
+$ singularity exec /home/vagrant/anacapa-container/anacapa-1.5.0.img /bin/bash $ANACAPA/Anacapa_db/anacapa_QC_dada2.sh -i $ANACAPA/12S_test_data -o /home/vagrant/12S_time_test -d $ANACAPA/Anacapa_db -f $ANACAPA/12S_test_data/forward.txt -r $ANACAPA/12S_test_data/reverse.txt -e $ANACAPA/Anacapa_db/metabarcode_loci_min_merge_length.txt -a nextera -t MiSeq -l
 ```
 
-The expected results can be found in `~/Anacapa-git/Anacapa_test_data_expected_output_after_QC_dada2`
+The expected results can be found in `anacapa/Anacapa_test_data_expected_output_after_QC_dada2`
 
 Approximate time to run:
 
@@ -95,13 +88,19 @@ user	0m43.568s
 sys	0m1.396s
 ```
 
-8. Run the Anacapa Classifier example
+If using `slurm` or `qsub` an example job file is available in the `jobs/` folder of this repository.
+
+### 5. Run the Anacapa Classifier example
+
+This command runs the Anacapa Classifier pipeline on the output of the QC pipeline. Edit the ANACAPA variable to point to your extracted `anacapa` folder.
+
 
 ```
-$ singularity exec /home/vagrant/anacapa-container/anacapa-1.4.0.img /bin/bash /home/vagrant/Anacapa-git/Anacapa_db/anacapa_classifier.sh -o /home/vagrant/12S_time_test -d /home/vagrant/Anacapa-git/Anacapa_db  -l
+$ export ANACAPA="/home/vagrant/anacapa"
+$ singularity exec /home/vagrant/anacapa-container/anacapa-1.5.0.img /bin/bash $ANACAPA/Anacapa_db/anacapa_classifier.sh -o /home/vagrant/12S_time_test -d $ANACAPA/Anacapa_db  -l
 ```
 
-The expected results can be found in `~/Anacapa-git/Anacapa_test_data_expected_output_after_classifier`
+The expected results can be found in `anacapa/Anacapa_test_data_expected_output_after_classifier`
 
 Approximate time to run:
 
@@ -110,6 +109,20 @@ real	0m19.467s
 user	0m13.384s
 sys	0m1.480s
 ```
+
+If using `slurm` or `qsub` an example job file is available in the `jobs/` folder of this repository.
+
+### 6. (Optional) Run the CRUX example
+
+***Note*** To run Crux on Linux, you'll need to download a large amount of external genomic/taxonomy data. Please see the Crux readme for more info.
+
+**Note** For all the follow examples, you may need to change the exact paths to match the paths on your local machine. Included paths use vagrant paths as an example.
+
+```
+$ singularity exec /home/vagrant/anacapa-1.5.0.img /bin/bash /home/vagrant/anacapa/crux_db/crux.sh -n 16S_example -f GTGYCAGCMGCCGCGGTAA -r GGACTACNVGGGTWTCTAAT -s 200 -m 450 -o ~/anacapa/crux_db/16S_example -d ~/anacapa/crux_db/ -l -a 1 -v 0.001 -e 5 -q
+```
+
+The expected results can be found in `~/anacapa/Crux_test_expected_output`
 
 ### Vagrant Instructions (Mac/Windows)
 
@@ -135,16 +148,14 @@ $ vagrant ssh
 
 3. Download the Anacapa vagrant container
 
-First, download the Linux Container dataset from https://doi.org/10.6071/M31H29. Extract the downloaded file and ensure `anacapa-1.4.0.img` is present.
-
-Next, Download the Anacapa Vagrant Container from https://doi.org/10.6071/M3R07J. Extract the downloaded .tar.gz file and you should see two files, a copy of both Anacapa and CRUX configured for use in Vagrant. Extract both files, and then move the `crux_db` folder inside the `Anacapa_db` folder. Then move `anacapa-1.4.0.img` and `Anacapa_db` into a new folder somewhere you are comfortable working in, such as a folder called 'anacapa-test' in your home folder.
+Download the Anacapa Vagrant Container (Mac/Windows) from https://doi.org/10.6071/M3R07J. Extract the downloaded .tar.gz file and you should see an anacapa.img and a copy of both Anacapa and CRUX configured for use in Vagrant. Move the `crux_db` folder inside the `Anacapa_db` folder. Then move `anacapa-1.5.0.img` and `Anacapa_db` into a new folder somewhere you are comfortable working in, such as a folder called 'anacapa' in your home folder.
 
 4. To load your own data
 
 If the need arises, users can load their own data into the Virtualbox by adding it to the `singularity-vm/` directory and moving it into the vagrant directory in the Vituralbox.
 
 ```
-vagrant@vagrant:/vagrant$ cp -r /vagrant/datafolder ~/Anacapa-git/
+vagrant@vagrant:/vagrant$ cp -r /vagrant/datafolder ~/anacapa/
 ```
 
 5. Follow test instructions

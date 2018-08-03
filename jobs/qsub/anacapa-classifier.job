@@ -1,0 +1,12 @@
+#! /bin/bash
+#$ -S /bin/bash
+#$ -q std.q
+#$ -cwd
+#$ -N anacapa-co1-mock-classifier
+#$ -j y
+#$ -o anacapa-co1-mock-classifier-out.qlog
+#$ -e anacapa-co1-mock-classifier-err.qlog
+#$ -l mem_free=48G
+#$ -pe smp 1
+#$ -V
+# edit the jobs/sbatch/anacapa-classifier.job  and replace all top commented out lines with lines from this file
