@@ -6,7 +6,7 @@ Written by Emily Curd and Max Ogden.
 
 ## Requirements
 
-- Linux (recommended) or Windows/Mac via Virtualbox (Slower but works)
+- Linux (Recommended) or Windows/Mac via Virtualbox (Slower but works)
 - Around 6GB of disk space
 
 ## Overview
@@ -15,7 +15,7 @@ The following guide shows how to download and run the Anacapa toolkit and proces
 
 ### Linux Instructions
 
-For Mac/Windows instructions, first see the Vagrant section below.
+For Mac/Windows instructions, first see the [Vagrant](#vagrant) section below.
 
 We recommend using Linux to run Anacapa Container, as running it on Windows or Mac involves virtualization which imposes performance and resource limitations, potentially making analysis slower depending on the size of your data.
 
@@ -124,27 +124,31 @@ $ singularity exec /home/vagrant/anacapa-1.5.0.img /bin/bash /home/vagrant/anaca
 
 The expected results can be found in `~/anacapa/Crux_test_expected_output`
 
-### Vagrant Instructions (Mac/Windows)
+### Vagrant
+
+#### Instructions For Mac/Windows Users
 
 These instructions will allow users to run the Anacapa Toolkit on an OSX or PC. The authors note that running Anacapa on a Virtualbox may reduce the speed, and performance of the toolkit. We recommend that the user allow the Vagrant Virtualbox at least 10 GB of memory. 	If the vagrant Virtualbox does not have at least 5 GB of free Memory some steps may fail.
 
 1. Install Singularity Vagrant Virtualbox Linux
 
-Follow these instructions (These pages are also backed up in Git files above if links break):
+Follow these Vagrant/Singularity installation instructions (These pages are also backed up in Git files above if links break):
   - Instructions can be found here for a Mac: http://singularity.lbl.gov/install-mac
-  - Instructions can be found here for a PC: http://singularity.lbl.gov/install-mac
+  - Instructions can be found here for a PC: http://singularity.lbl.gov/install-windows
 
 2. Start a new instance and login
 
-After a successful installation the Singularity Vagrant Virtual, start a new instance by logging into a terminal (for MAC) or GitBash for (PC).
+After a successful installation of the Singularity Vagrant VirtualBox, start a new instance by logging into a terminal (for Mac) or GitBash for (PC).
 
-Change directory to the one that contains the Singularity virtual machine e.g.
+As per the above instructions, you should have already created a folder e.g. `singularity-vm` and executed the command `vagrant init singularityware/singularity-2.4` inside of it. You only have to do those two commands once as a set up step. However, each time you wish to use the vagrant machine you have to ensure you run the following three commands:
 
 ```
 $ cd singularity-vm/
 $ vagrant up
 $ vagrant ssh
 ```
+
+The final command, `vagrant ssh`, will open a terminal into the virtual machine where you have the `singularity` command available.
 
 3. Download the Anacapa vagrant container
 
