@@ -71,11 +71,25 @@ Any commands you type in the Singularity shell will happen inside the container.
 
 ### 4. Run the Anacapa QC example
 
-This command runs the Anacapa QC pipeline with the included `12S_test_data`. Edit the ANACAPA variable to point to your extracted `anacapa` folder.
+This script runs the Anacapa QC pipeline with the included `12S_test_data`. Save this as a new file called `run-anacapa-qc.sh`, and then edit the variables to point to your extracted `anacapa` folders and other paths it requires.
 
 ```
-$ export ANACAPA="/home/vagrant/anacapa"
-$ singularity exec /home/vagrant/anacapa-container/anacapa-1.5.0.img /bin/bash $ANACAPA/Anacapa_db/anacapa_QC_dada2.sh -i $ANACAPA/12S_test_data -o /home/vagrant/12S_time_test -d $ANACAPA/Anacapa_db -f $ANACAPA/12S_test_data/forward.txt -r $ANACAPA/12S_test_data/reverse.txt -e $ANACAPA/Anacapa_db/metabarcode_loci_min_merge_length.txt -a nextera -t MiSeq -l
+# EDIT THESE
+BASEDIR="/vagrant" # change to folder you want shared into container
+CONTAINER="/vagrant/anacapa-container/anacapa-1.5.0.img" # change to full container .img path
+DB="/vagrant/Anacapa/Anacapa_db" # change to full path to Anacapa_db
+DATA="$DB/12S_test_data" # change to input data folder (default 12S_test_data inside Anacapa_db)
+OUT="$BASEDIR/12S_time_test" # change to output data folder
+
+# OPTIONAL
+FORWARD="$DB/12S_test_data/forward.txt"
+REVERSE="$DB/12S_test_data/reverse.txt"
+
+cd $BASEDIR
+
+# If you need additional folders shared into the container, add additional -B arguments below
+
+time singularity exec -B $BASEDIR $CONTAINER /bin/bash -c "$DB/anacapa_QC_dada2.sh -i $DATA -o $OUT -d $DB -f $FORWARD -r $REVERSE -e $DB/metabarcode_loci_min_merge_length.txt -a truseq -t MiSeq -l -g"
 ```
 
 The expected results can be found in `anacapa/Anacapa_test_data_expected_output_after_QC_dada2`
@@ -92,12 +106,19 @@ If using `slurm` or `qsub` an example job file is available in the `jobs/` folde
 
 ### 5. Run the Anacapa Classifier example
 
-This command runs the Anacapa Classifier pipeline on the output of the QC pipeline. Edit the ANACAPA variable to point to your extracted `anacapa` folder.
-
+This script runs the Anacapa Classifier pipeline on the output of the QC pipeline. It is similar to the first script. Save it as "run-anacapa-classifier.sh", edit, and run:
 
 ```
-$ export ANACAPA="/home/vagrant/anacapa"
-$ singularity exec /home/vagrant/anacapa-container/anacapa-1.5.0.img /bin/bash $ANACAPA/Anacapa_db/anacapa_classifier.sh -o /home/vagrant/12S_time_test -d $ANACAPA/Anacapa_db  -l
+# EDIT THESE
+BASEDIR="/vagrant" # change to folder you want shared into container
+CONTAINER="/vagrant/anacapa-container/anacapa-1.5.0.img" # change to full container .img path
+DB="/vagrant/Anacapa/Anacapa_db" # change to full path to Anacapa_db
+OUT="$BASEDIR/12S_time_test" # change to output data folder
+
+cd $BASEDIR
+
+# If you need additional folders shared into the container, add additional -B arguments below
+time singularity exec -B $BASEDIR -B $SINGULARITY $CONTAINER /bin/bash -c "$DB/anacapa_classifier.sh -o $OUT -d $DB -l"
 ```
 
 The expected results can be found in `anacapa/Anacapa_test_data_expected_output_after_classifier`
@@ -119,7 +140,7 @@ If using `slurm` or `qsub` an example job file is available in the `jobs/` folde
 **Note** For all the follow examples, you may need to change the exact paths to match the paths on your local machine. Included paths use vagrant paths as an example.
 
 ```
-$ singularity exec /home/vagrant/anacapa-1.5.0.img /bin/bash /home/vagrant/anacapa/crux_db/crux.sh -n 16S_example -f GTGYCAGCMGCCGCGGTAA -r GGACTACNVGGGTWTCTAAT -s 200 -m 450 -o ~/anacapa/crux_db/16S_example -d ~/anacapa/crux_db/ -l -a 1 -v 0.001 -e 5 -q
+$ singularity exec /vagrant/anacapa-1.5.0.img /bin/bash /vagrant/anacapa/crux_db/crux.sh -n 16S_example -f GTGYCAGCMGCCGCGGTAA -r GGACTACNVGGGTWTCTAAT -s 200 -m 450 -o ~/anacapa/crux_db/16S_example -d ~/anacapa/crux_db/ -l -a 1 -v 0.001 -e 5 -q
 ```
 
 The expected results can be found in `~/anacapa/Crux_test_expected_output`
@@ -152,15 +173,21 @@ The final command, `vagrant ssh`, will open a terminal into the virtual machine 
 
 3. Download the Anacapa vagrant container
 
-Download the Anacapa Vagrant Container (Mac/Windows) from https://doi.org/10.6071/M3R07J. Extract the downloaded .tar.gz file and you should see an anacapa.img and a copy of both Anacapa and CRUX configured for use in Vagrant. Move the `crux_db` folder inside the `Anacapa_db` folder. Then move `anacapa-1.5.0.img` and `Anacapa_db` into a new folder somewhere you are comfortable working in, such as a folder called 'anacapa' in your home folder.
+Download the Anacapa Vagrant Container (Mac/Windows) from https://doi.org/10.6071/M3R07J. Extract the downloaded .tar.gz file and you should see an anacapa.img and a copy of both Anacapa and CRUX configured for use in Vagrant. Move the `crux_db` folder inside the `Anacapa_db` folder. Then move `anacapa-1.5.0.img` and `Anacapa_db` into the `singularity-vm` folder.
 
-4. To load your own data
+4. Access the downloaded data from inside vagrant
 
-If the need arises, users can load their own data into the Virtualbox by adding it to the `singularity-vm/` directory and moving it into the vagrant directory in the Vituralbox.
+Vagrant will automatically sync files in the folder `singularity-vm` to and from the guest vagrant machine running the container. This means you can edit the files inside `singularity-vm` with your Mac or Windows text editor and the container will have access to them immediately.
+
+By default, Vagrant shares your project directory to the `/vagrant` directory in your guest machine.
+
+You should have already placed all of the downloaded folders inside the `singularity-vm` folder. Double check they are available in the vagrant shell:
 
 ```
-vagrant@vagrant:/vagrant$ cp -r /vagrant/datafolder ~/anacapa/
+vagrant@vagrant:/vagrant$ ls /vagrant
 ```
+
+You should see the contents of the `singularity-vm` folder.
 
 5. Follow test instructions
 
