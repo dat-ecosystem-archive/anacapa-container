@@ -29,7 +29,7 @@ This guide was tested with Singularity version 2.5.2.
 
 ### 2. Download the container and test data
 
-Download the Linux container dataset from DASH: https://doi.org/10.6071/M31H29. You will be emailed a download link that you can download to whatever machine you want to run the analysis on (You can do `wget <url of download>` to download on the CLI directly and then `tar xf downloaded-file.tar.gz` to extract it).
+Download the Linux container dataset from [Zenodo](https://doi.org/10.5281/zenodo.2602180) ([Mirror](https://doi.org/10.6071/M31H29) in case Zenodo is down). You can do `wget <url of download link>` to download on the CLI directly and then `tar xf downloaded-file.tar.gz` to extract it.
 
 You should now see 3 files. 
 
@@ -173,7 +173,7 @@ The final command, `vagrant ssh`, will open a terminal into the virtual machine 
 
 3. Download the Anacapa vagrant container
 
-Download the Anacapa Vagrant Container (Mac/Windows) from https://doi.org/10.6071/M3R07J. Extract the downloaded .tar.gz file and you should see an anacapa.img and a copy of both Anacapa and CRUX configured for use in Vagrant. Move the `crux_db` folder inside the `Anacapa_db` folder. Then move `anacapa-1.5.0.img` and `Anacapa_db` into the `singularity-vm` folder.
+Download the [Anacapa Vagrant Container (Mac/Windows)](https://zenodo.org/record/2602194) ([Mirror](https://doi.org/10.6071/M3R07J)). Extract the downloaded .tar.gz file and you should see an anacapa.img and a copy of both Anacapa and CRUX configured for use in Vagrant. Move the `crux_db` folder inside the `Anacapa_db` folder. Then move `anacapa-1.5.0.img` and `Anacapa_db` into the `singularity-vm` folder.
 
 4. Access the downloaded data from inside vagrant
 
