@@ -29,7 +29,7 @@ This guide was tested with Singularity version 2.5.2.
 
 ### 2. Download the container and test data
 
-Download the Linux container dataset from [Zenodo](https://doi.org/10.5281/zenodo.2602180) ([Mirror](https://doi.org/10.6071/M31H29) in case Zenodo is down). You can do `wget <url of download link>` to download on the CLI directly and then `tar xf downloaded-file.tar.gz` to extract it.
+Download the [Linux container dataset from Zenodo](https://doi.org/10.5281/zenodo.2602180) ([Mirror](https://doi.org/10.6071/M31H29)). You can do `wget <url of download link>` to download on the CLI directly and then `tar xf downloaded-file.tar.gz` to extract it.
 
 You should now see 3 files. 
 
