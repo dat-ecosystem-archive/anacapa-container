@@ -69,6 +69,17 @@ Singularity anacapa-1.5.0.img:~>
 
 Any commands you type in the Singularity shell will happen inside the container. Type `exit` to go back to your normal shell.
 
+#### Accessing other folders
+
+For singularity version 2.5.2, only `$HOME`, `/tmp`, `/proc`, `/sys`, and `/dev` are automatically shared from the host filesystem into the container. So if you need the scripts inside the container to be able to directly access a folder other than those you should be able to add that folder with a `-B` argument to your singularity commands. For example: `-B /home/anacapa`.
+
+To test if it worked, you can go back into the singularity shell:
+
+```
+singularity shell -B /home/anacapa anacapa-1.5.0.img
+Singularity anacapa-1.5.0.img:~> ls /home/anacapa
+```
+
 ### 4. Run the Anacapa QC example
 
 This script runs the Anacapa QC pipeline with the included `12S_test_data`. Save this as a new file called `run-anacapa-qc.sh`, and then edit the variables to point to your extracted `anacapa` folders and other paths it requires.
