@@ -2,6 +2,8 @@
 
 More info on active projects and modules at [dat-ecosystem.org](https://dat-ecosystem.org/) <img src="https://i.imgur.com/qZWlO1y.jpg" width="30" height="30" /> 
 
+---
+
 # Anacapa Container
 
 Instructions For Running [The Anacapa Toolkit](https://github.com/limey-bean/Anacapa) in a Singularity container using Linux or a Vagrant Virtualbox for Mac/Windows.
